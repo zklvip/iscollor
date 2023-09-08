@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>我是A界面</h1>
+  <button id="btn">发送消息</button>
+  <a scr="http://127.0.0.1:5500/index1.html">xxx</a>
+  <button id="msg">打开b页面</button>
+  <script>
+    const btn = document.getElementById('btn')
+
+    console.log(window.opener);
+    btn.onclick = function () {
+      //向b界面传递数据
+      console.log('向b界面传递数据');
+      window.parent.postMessage({ hi: 10 }, '*')
+      // window.opener.postMessage({ "stateNum": 'stateNum', "caseId": 'caseId' }, '*');
+
+    }
+
+    const msg = document.getElementById('msg')
+    msg.onclick = () => {
+      window.open('http://127.0.0.1:5500/index1.html')
+    }
+    // function fun() {
+    //   window.addEventListener('message', (e) => {
+    //     console.log(e);
+    //   })
+    // }
+
+
+  </script>
+</body>
+
+</html>

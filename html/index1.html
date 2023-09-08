@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>体温单</title>
+  <style>
+    #temperatureTable {
+      margin-bottom: 20px;
+    }
+
+    #chart {
+      width: 800px;
+      height: 300px;
+    }
+  </style>
+</head>
+
+<body>
+  <table id="temperatureTable">
+    <thead>
+      <tr>
+        <th>日期</th>
+        <th>体温</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 使用 JavaScript 动态生成表格内容 -->
+    </tbody>
+  </table>
+  <canvas id="chart"></canvas>
+  <script>
+    const table = document.getElementById('temperatureTable');
+    const tbody = table.querySelector('tbody');
+    const chart = document.getElementById('chart');
+    const ctx = chart.getContext('2d');
+
+    const data = [
+      { date: '2021-08-01', temperature: 36.5 },
+      { date: '2021-08-02', temperature: 36.6 },
+      { date: '2021-08-03', temperature: 36.7 },
+      // ...
+    ];
+
+    // 动态生成表格内容
+    data.forEach(item => {
+      const row = document.createElement('tr');
+      const dateCell = document.createElement('td');
+      const tempCell = document.createElement('td');
+      dateCell.textContent = item.date;
+      tempCell.textContent = item.temperature;
+      row.appendChild(dateCell);
+      row.appendChild(tempCell);
+      tbody.appendChild(row);
+    });
+
+    const chartWidth = chart.width;
+    const chartHeight = chart.height;
+
+    const MIN_TEMP = Math.min(...data.map(item => item.temperature));
+    const MAX_TEMP = Math.max(...data.map(item => item.temperature));
+
+    const startDate = new Date(data[0].date);
+    const endDate = new Date(data[data.length - 1].date);
+    const days = (endDate - startDate) / (24 * 60 * 60 * 1000);
+
+    const xSpacing = chartWidth / (data.length - 1);
+    const ySpacing = chartHeight / (MAX_TEMP - MIN_TEMP);
+
+    // 绘制折线图
+    ctx.strokeStyle = '#f00';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    data.forEach((item, index) => {
+      const x = index * xSpacing;
+      const y = (MAX_TEMP - item.temperature) * ySpacing;
+      if (index === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+    ctx.stroke();
+
+  </script>
+</body>
+
+</html>
